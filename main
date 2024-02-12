@@ -1,0 +1,33 @@
+Whois enumaration
+Whois domainname -h whoisserver
+
+Host command
+Host www.megacorpone.com
+Host -t mx megacorpone.com
+Host -t txt megacorpone.com
+
+DNS Enum
+Dnsenum megacorpone.com
+
+Netcat port scan UDP
+Nc -nv -u -z - 1 192.168.50.149 120-123
+
+Netcat port scan TCP 
+Nc -nvv -w 1 -z 192.168.50.152 3389-3390
+
+
+Powershell port scan
+1..1024 | % {echo ((New-Object Net.Sockets.TcpClient).Connect("192.168.192.151", $_)) "TCP port $_ is open"} 2>$null
+
+
+dir bruteforce 
+
+gobuster dir -u 192.168.50.20 -w /usr/share/wordlists/dirb/common.txt -t 5
+
+pattern dir bruteforce
+/api_name/v1
+create pattern file 
+{GOBUSTER}/v1
+{GOBUSTER}/v2
+gobuster dir -u http://192.168.50.16:5002 -w /usr/share/wordlists/dirb/big.txt -p pattern
+
