@@ -67,3 +67,8 @@ function encode_to_javascript(string) {
 let encoded = encode_to_javascript('insert_minified_javascript')
 console.log(encoded)
 
+*****************
+wordpress stored xss privilege escalation @ https://portal.offsec.com/courses/pen-200/books-and-videos/modal/modules/introduction-to-web-application-attacks/cross-site-scripting/privilege-escalation-via-xss
+
+*************
+
